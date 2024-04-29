@@ -38,7 +38,7 @@
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo" href="index.html"><img
-                        src="{{ asset('assets/auth/images/miracleschool.jaksel.jpg') }}" alt="logo" /></a>
+                    src="{{ asset('assets/auth/images/SDKLOGO260.png') }}" alt="logo"/></a>
                 <a class="navbar-brand brand-logo-mini" href="index.html"><img
                         src="{{ asset('assets/auth/images/logo-mini.svg') }}" alt="logo" /></a>
             </div>
@@ -239,8 +239,8 @@
                     </li>
                     @if(auth()->user()->role == 'admin' || auth()->user()->role == 'ordal' || auth()->user()->role == 'writer')
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('blog') }}">
-                            <span class="menu-title">Blog</span>
+                        <a class="nav-link" href="{{ route('sitevisit') }}">
+                            <span class="menu-title">Site Visit</span>
                             <i class="mdi mdi-image-multiple menu-icon"></i>
                         </a>
                     </li>

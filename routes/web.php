@@ -10,6 +10,7 @@ use App\Http\Controllers\TaskController; // Import your TaskController
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\SiteVisitController;
 use App\Http\Controllers\WebsiteController;
 
 
@@ -30,11 +31,21 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
+
+//Website Site Visit
+Route::get('/site-visit', [SiteVisitController::class, 'indexSiteVisit'])->name('website.sitevisit');
+Route::post('/site-visit/store', [SiteVisitController::class, 'store'])->name('site-visit.store');
+
+
 //Admin Web Miracle
 
 
 // Admin Routes
 Route::middleware(['auth', 'admin'])->group(function () {
+
+    Route::get('/site-visit-all', [SiteVisitController::class, 'showAllSiteVisit'])->name('sitevisit');
+    Route::get('/site-visit-all/{id}', [SiteVisitController::class, 'showDetail'])->name('detail.sitevisit');
+
     // Blog Routes
     Route::get('/blog', [AdminController::class, 'showBlog'])->name('blog');
     Route::get('/form_blog', [AdminController::class, 'showBlogForm'])->name('form_blog');
@@ -42,7 +53,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/blog/fetch', [AdminController::class, 'fetchBlogData'])->name('blog.fetch');
     Route::get('/blog/edit/{id}', [AdminController::class, 'showEditBlogForm'])->name('blog.edit');
     Route::post('/blog/edit/{id}', [AdminController::class, 'submitEditBlog'])->name('blog.edit.submit');
-    
+
 
     // rms Route
     Route::get('/role_management', [AdminController::class, 'showRolemanagement'])->name('showRolemanagement');
@@ -99,6 +110,7 @@ Route::get('/website/kelas', [WebsiteController::class, 'indexKelas'])->name('we
 Route::get('/website/testimoni', [WebsiteController::class, 'indexTestimoni'])->name('website.testimoni');
 Route::get('/website/blog', [WebsiteController::class, 'indexBlog'])->name('website.blog');
 Route::get('/website/aboutus', [WebsiteController::class, 'indexAboutUs'])->name('website.aboutus');
+
 
 
 
