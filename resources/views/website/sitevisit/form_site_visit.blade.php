@@ -3,6 +3,20 @@
 @extends('layouts.user')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+<style>
+    #sign_photo {
+        border: 2px dotted #CCCCCC;
+        border-radius: 15px;
+        cursor: crosshair;
+    }
+
+    #sign_photo_client {
+        border: 2px dotted #CCCCCC;
+        border-radius: 15px;
+        cursor: crosshair;
+    }
+</style>
+
 @section('content')
     <div class="main-panel">
         <div class="content-wrapper">
@@ -52,122 +66,191 @@
                                     <input type="file" class="form-control" name="visit_photo" accept="image/*,video/*"
                                         required>
                                 </div>
-                                {{-- <!-- Tambahkan input tersembunyi untuk menyimpan URL gambar tanda tangan site visit -->
-                                <input type="hidden" id="sign_photo_url" name="sign_photo_url">
-                                <!-- Tambahkan input tersembunyi untuk menyimpan URL gambar tanda tangan client -->
-                                <input type="hidden" id="sign_photo_client_url" name="sign_photo_client_url">
+                                <!-- Tambahkan area tanda tangan -->
                                 <div class="form-group">
-                                    <label for="exampleInputSignature">Signature (Site Visit)</label>
-                                    <canvas id="sign_photo" class="sign_photo" width="400" height="200"
-                                        style="border: 1px solid black;"></canvas>
-                                    <button type="button" id="clearSignature" class="btn btn-danger">Clear
+                                    <label>User Signature</label>
+                                    <canvas id="sign_photo" width="620" height="160"></canvas>
+                                    <button type="button" class="btn btn-default" id="sig-clearBtn">Clear
                                         Signature</button>
                                 </div>
+                                <!-- Hidden input to store signature data URL -->
+                                <input type="hidden" id="sign_photo_input_client" name="sign_photo_client">
                                 <div class="form-group">
-                                    <label for="exampleInputSignature">Client's Signature</label>
-                                    <canvas id="sign_photo_client" class="sign_photo_client" width="400" height="200"
-                                        style="border: 1px solid black;"></canvas>
-                                    <button type="button" id="clearSignatureClient" class="btn btn-danger">Clear
+                                    <label>Client Signature</label>
+                                    <canvas id="sign_photo_client" width="620" height="160"></canvas>
+                                    <button type="button" class="btn btn-default" id="sig-clearBtn_client">Clear
                                         Signature</button>
-                                </div> --}}
+                                </div>
+                                <!-- Hidden input to store signature data URL -->
+                                <input type="hidden" id="sign_photo_input_client" name="sign_photo_client">
                                 <div class="form-group">
                                     <label for="exampleInputName1">Tanggal Submit</label>
                                     <input type="date" class="form-control" id="exampleInputName1" name="created_at"
                                         placeholder="date" required value="{{ now()->format('Y-m-d') }}" readonly>
                                 </div>
+                                <div>
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+
+                                </div>
+                            </form>
                         </div>
-                        <div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                        </form>
                     </div>
                 </div>
             </div>
-            {{-- <script>
-                // Skrip untuk tanda tangan site visit
-                const canvas1 = document.getElementById('sign_photo');
-                const ctx1 = canvas1.getContext('2d');
-                let isDrawing1 = false;
-                let lastX1 = 0;
-                let lastY1 = 0;
-
-                canvas1.addEventListener('mousedown', (e) => {
-                    isDrawing1 = true;
-                    [lastX1, lastY1] = [e.offsetX, e.offsetY];
-                });
-
-                canvas1.addEventListener('mousemove', (e) => {
-                    if (!isDrawing1) return;
-                    ctx1.beginPath();
-                    ctx1.moveTo(lastX1, lastY1);
-                    ctx1.lineTo(e.offsetX, e.offsetY);
-                    ctx1.stroke();
-                    [lastX1, lastY1] = [e.offsetX, e.offsetY];
-                });
-
-                canvas1.addEventListener('mouseup', () => {
-                    isDrawing1 = false;
-                    // Mengambil URL gambar dari kanvas dan menyimpannya ke dalam input tersembunyi
-                    document.getElementById('sign_photo_url').value = canvas1.toDataURL();
-                });
-
-                canvas1.addEventListener('mouseout', () => {
-                    isDrawing1 = false;
-                });
-
-                document.getElementById('clearSignature').addEventListener('click', () => {
-                    ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
-                });
-
-                // Skrip untuk tanda tangan client
-                const canvas2 = document.getElementById('sign_photo_client');
-                const ctx2 = canvas2.getContext('2d');
-                let isDrawing2 = false;
-                let lastX2 = 0;
-                let lastY2 = 0;
-
-                canvas2.addEventListener('mousedown', (e) => {
-                    isDrawing2 = true;
-                    [lastX2, lastY2] = [e.offsetX, e.offsetY];
-                });
-
-                canvas2.addEventListener('mousemove', (e) => {
-                    if (!isDrawing2) return;
-                    ctx2.beginPath();
-                    ctx2.moveTo(lastX2, lastY2);
-                    ctx2.lineTo(e.offsetX, e.offsetY);
-                    ctx2.stroke();
-                    [lastX2, lastY2] = [e.offsetX, e.offsetY];
-                });
-
-                canvas2.addEventListener('mouseup', () => {
-                    isDrawing2 = false;
-                    // Mengambil URL gambar dari kanvas dan menyimpannya ke dalam input tersembunyi
-                    document.getElementById('sign_photo_client_url').value = canvas2.toDataURL();
-                });
-
-                canvas2.addEventListener('mouseout', () => {
-                    isDrawing2 = false;
-                });
-
-                document.getElementById('clearSignatureClient').addEventListener('click', () => {
-                    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-                });
-            </script> --}}
         </div>
+        <script>
+            // Pada form submit, simpan data tanda tangan dan submit formulir
+            document.getElementById("submitSiteVisit").addEventListener("submit", function(e) {
+                e.preventDefault(); // Menghentikan pengiriman formulir
+                var canvas = document.getElementById("sign_photo");
+                var sign_photo = canvas.toDataURL();
+                document.getElementById("sign_photo_input").value = sign_photo;
+
+                var canvas2 = document.getElementById("sign_photo_client");
+                var sign_photo_client = canvas2.toDataURL();
+                document.getElementById("sign_photo_input_client").value = sign_photo_client;
+                this.submit(); // Submit the form
+            });
+
+            // Tambahkan kode JavaScript untuk tanda tangan
+            window.requestAnimFrame = (function(callback) {
+                return window.requestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.mozRequestAnimationFrame ||
+                    window.oRequestAnimationFrame ||
+                    window.msRequestAnimaitonFrame ||
+                    function(callback) {
+                        window.setTimeout(callback, 1000 / 60);
+                    };
+            })();
+
+            var canvas = document.getElementById("sign_photo");
+            var ctx = canvas.getContext("2d");
+            ctx.strokeStyle = "#222222";
+            ctx.lineWidth = 4;
+
+            var drawing = false;
+            var mousePos = {
+                x: 0,
+                y: 0
+            };
+            var lastPos = mousePos;
+
+            canvas.addEventListener("mousedown", function(e) {
+                drawing = true;
+                lastPos = getMousePos(canvas, e);
+            }, false);
+
+            canvas.addEventListener("mouseup", function(e) {
+                drawing = false;
+            }, false);
+
+            canvas.addEventListener("mousemove", function(e) {
+                mousePos = getMousePos(canvas, e);
+            }, false);
+
+            // Add touch event support for mobile
+            canvas.addEventListener("touchstart", function(e) {
+
+            }, false);
+
+            canvas.addEventListener("touchmove", function(e) {
+                var touch = e.touches[0];
+                var me = new MouseEvent("mousemove", {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(me);
+            }, false);
+
+            canvas.addEventListener("touchstart", function(e) {
+                mousePos = getTouchPos(canvas, e);
+                var touch = e.touches[0];
+                var me = new MouseEvent("mousedown", {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas.dispatchEvent(me);
+            }, false);
+
+            canvas.addEventListener("touchend", function(e) {
+                var me = new MouseEvent("mouseup", {});
+                canvas.dispatchEvent(me);
+            }, false);
+
+            function getMousePos(canvasDom, mouseEvent) {
+                var rect = canvasDom.getBoundingClientRect();
+                return {
+                    x: mouseEvent.clientX - rect.left,
+                    y: mouseEvent.clientY - rect.top
+                }
+            }
+
+            function getTouchPos(canvasDom, touchEvent) {
+                var rect = canvasDom.getBoundingClientRect();
+                return {
+                    x: touchEvent.touches[0].clientX - rect.left,
+                    y: touchEvent.touches[0].clientY - rect.top
+                }
+            }
+
+            function renderCanvas() {
+                if (drawing) {
+                    ctx.moveTo(lastPos.x, lastPos.y);
+                    ctx.lineTo(mousePos.x, mousePos.y);
+                    ctx.stroke();
+                    lastPos = mousePos;
+                }
+            }
+
+            // Prevent scrolling when touching the canvas
+            document.body.addEventListener("touchstart", function(e) {
+                if (e.target == canvas) {
+                    e.preventDefault();
+                }
+            }, false);
+            document.body.addEventListener("touchend", function(e) {
+                if (e.target == canvas) {
+                    e.preventDefault();
+                }
+            }, false);
+            document.body.addEventListener("touchmove", function(e) {
+                if (e.target == canvas) {
+                    e.preventDefault();
+                }
+            }, false);
+
+            (function drawLoop() {
+                requestAnimFrame(drawLoop);
+                renderCanvas();
+            })();
+
+            function clearCanvas() {
+                canvas.width = canvas.width;
+            }
+
+            // Set up the UI
+            var sigText = document.getElementById("sig-dataUrl");
+            var sigImage = document.getElementById("sig-image");
+            var clearBtn = document.getElementById("sig-clearBtn");
+            var submitBtn = document.getElementById("sig-submitBtn");
+            clearBtn.addEventListener("click", function(e) {
+                clearCanvas();
+            }, false);
+        </script>
     @endsection
 
-    {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @if (session('success'))
         <script>
             document.addEventListener('DOMContentLoaded', function() {
                 Swal.fire({
                     title: 'Success!',
-                    text: 'Jika gambar tidak berhasil ditampilkan, silahkan ubah / upload ulang pada halaman edit',
+                    text: 'Site visit data has been successfully stored!',
                     icon: 'success'
                 }).then(function() {
-                    window.location.href = '{{ route('blog') }}';
+                    window.location.href = '{{ route('website.sitevisit') }}';
                 });
             });
         </script>
-    @endif --}}
+    @endif

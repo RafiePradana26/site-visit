@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-@extends('layouts.user')
+@extends('layouts.auth')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
 @section('content')
@@ -8,6 +8,9 @@
         <div class="content-wrapper">
             <div class="page-header">
                 <h3 class="page-title">
+                    <a href="/site-visit-all " class="page-title-icon bg-gradient-primary text-white me-2">
+                        <i class="mdi mdi-arrow-left"></i>
+                    </a>
                     Detail Site Visit
                 </h3>
                 <nav aria-label="breadcrumb">
@@ -21,8 +24,8 @@
                             <form>
                                 <div class="form-group">
                                     <label for="name">Name</label>
-                                    <input type="text" class="form-control" id="name" value="{{ $siteVisits->name }}"
-                                        readonly>
+                                    <input type="text" class="form-control" id="name"
+                                        value="{{ $siteVisits->name }}" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label for="email">Email Address</label>
@@ -50,6 +53,15 @@
                                         style="max-width: 200px;">
                                 </div>
                                 <div class="form-group">
+                                    <label for="signature">User's Signature</label><br>
+                                    <img src="{{ $siteVisits->sign_photo }}" alt="Signature" style="max-width: 200px;">
+                                </div>
+                                <div class="form-group">
+                                    <label for="signature">User's Signature</label><br>
+                                    <img src="{{ $siteVisits->sign_photo_cleint }}" alt="Signature"
+                                        style="max-width: 200px;">
+                                </div>
+                                <div class="form-group">
                                     <label for="created_at">Date of Visit</label>
                                     <input type="text" class="form-control" id="created_at"
                                         value="{{ $siteVisits->created_at }}" readonly>
@@ -59,91 +71,5 @@
                         </div>
                     </div>
                 </div>
-                {{-- <script>
-                // Skrip untuk tanda tangan site visit
-                const canvas1 = document.getElementById('sign_photo');
-                const ctx1 = canvas1.getContext('2d');
-                let isDrawing1 = false;
-                let lastX1 = 0;
-                let lastY1 = 0;
-
-                canvas1.addEventListener('mousedown', (e) => {
-                    isDrawing1 = true;
-                    [lastX1, lastY1] = [e.offsetX, e.offsetY];
-                });
-
-                canvas1.addEventListener('mousemove', (e) => {
-                    if (!isDrawing1) return;
-                    ctx1.beginPath();
-                    ctx1.moveTo(lastX1, lastY1);
-                    ctx1.lineTo(e.offsetX, e.offsetY);
-                    ctx1.stroke();
-                    [lastX1, lastY1] = [e.offsetX, e.offsetY];
-                });
-
-                canvas1.addEventListener('mouseup', () => {
-                    isDrawing1 = false;
-                    // Mengambil URL gambar dari kanvas dan menyimpannya ke dalam input tersembunyi
-                    document.getElementById('sign_photo_url').value = canvas1.toDataURL();
-                });
-
-                canvas1.addEventListener('mouseout', () => {
-                    isDrawing1 = false;
-                });
-
-                document.getElementById('clearSignature').addEventListener('click', () => {
-                    ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
-                });
-
-                // Skrip untuk tanda tangan client
-                const canvas2 = document.getElementById('sign_photo_client');
-                const ctx2 = canvas2.getContext('2d');
-                let isDrawing2 = false;
-                let lastX2 = 0;
-                let lastY2 = 0;
-
-                canvas2.addEventListener('mousedown', (e) => {
-                    isDrawing2 = true;
-                    [lastX2, lastY2] = [e.offsetX, e.offsetY];
-                });
-
-                canvas2.addEventListener('mousemove', (e) => {
-                    if (!isDrawing2) return;
-                    ctx2.beginPath();
-                    ctx2.moveTo(lastX2, lastY2);
-                    ctx2.lineTo(e.offsetX, e.offsetY);
-                    ctx2.stroke();
-                    [lastX2, lastY2] = [e.offsetX, e.offsetY];
-                });
-
-                canvas2.addEventListener('mouseup', () => {
-                    isDrawing2 = false;
-                    // Mengambil URL gambar dari kanvas dan menyimpannya ke dalam input tersembunyi
-                    document.getElementById('sign_photo_client_url').value = canvas2.toDataURL();
-                });
-
-                canvas2.addEventListener('mouseout', () => {
-                    isDrawing2 = false;
-                });
-
-                document.getElementById('clearSignatureClient').addEventListener('click', () => {
-                    ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
-                });
-            </script> --}}
             </div>
         @endsection
-
-        {{-- <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
-    @if (session('success'))
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'Jika gambar tidak berhasil ditampilkan, silahkan ubah / upload ulang pada halaman edit',
-                    icon: 'success'
-                }).then(function() {
-                    window.location.href = '{{ route('blog') }}';
-                });
-            });
-        </script>
-    @endif --}}

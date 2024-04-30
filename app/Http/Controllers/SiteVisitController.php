@@ -38,18 +38,12 @@ class SiteVisitController extends Controller
             'clientName' => 'required|string',
             'purpose' => 'required|string',
             'visit_photo' => 'required|image',
-            // 'sign_photo' => 'required',
+            'sign_photo' => 'required|string',
             // 'sign_photo_client' => 'required',
         ]);
 
         // Simpan foto kunjungan ke server
         $visitPhotoPath = $request->file('visit_photo')->store('visit_photos', 'public');
-
-        // // Simpan tanda tangan sebagai gambar (site visit)
-        // $signPhotoPath = $this->saveSignatureAsImage($request->input('sign_photo'));
-
-        // // Simpan tanda tangan sebagai gambar (client)
-        // $signPhotoClientPath = $this->saveSignatureAsImage($request->input('sign_photo_client'));
 
         // Simpan data ke database
         $siteVisit = new SiteVisitModel();
@@ -59,28 +53,12 @@ class SiteVisitController extends Controller
         $siteVisit->clientName = $validatedData['clientName'];
         $siteVisit->purpose = $validatedData['purpose'];
         $siteVisit->visit_photo = $visitPhotoPath;
-        // $siteVisit->sign_photo = $signPhotoPath;
-        // $siteVisit->sign_photo_client = $signPhotoClientPath;
+        $siteVisit->sign_photo = $validatedData['sign_photo'];
         $siteVisit->save();
 
         // Kembalikan respons ke pengguna
-        return redirect()->back()->with('success', 'Site visit data has been successfully stored!');
+        return redirect()->route('website.sitevisit')->with('success', 'Site visit data has been successfully stored!');
     }
-
-    // Metode untuk menyimpan tanda tangan sebagai gambar
-    // private function saveSignatureAsImage($signatureData)
-    // {
-    //     // Decode data URL dan simpan sebagai file gambar
-    //     $encoded_image = explode(",", $signatureData)[1];
-    //     $decoded_image = base64_decode($encoded_image);
-    //     $imagePath = 'signatures/' . uniqid() . '.png'; // Misalnya, simpan tanda tangan sebagai PNG
-
-    //     // Simpan gambar ke dalam direktori storage
-    //     file_put_contents(public_path($imagePath), $decoded_image);
-
-    //     // Kembalikan path dari gambar yang disimpan
-    //     return $imagePath;
-    // }
 
 
     public function edit($id)
