@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteVisitModel;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
 class SiteVisitController extends Controller
@@ -39,11 +40,13 @@ class SiteVisitController extends Controller
             'purpose' => 'required|string',
             'visit_photo' => 'required|image',
             'sign_photo' => 'required|string',
-            // 'sign_photo_client' => 'required',
+            'sign_photo_client' => 'required|string',
         ]);
 
         // Simpan foto kunjungan ke server
         $visitPhotoPath = $request->file('visit_photo')->store('visit_photos', 'public');
+        $signPhotoPath = $this->saveBase64Image($validatedData['sign_photo'], 'signatures');
+        $signPhotoClientPath = $this->saveBase64Image($validatedData['sign_photo_client'], 'signatures');
 
         // Simpan data ke database
         $siteVisit = new SiteVisitModel();
@@ -53,11 +56,29 @@ class SiteVisitController extends Controller
         $siteVisit->clientName = $validatedData['clientName'];
         $siteVisit->purpose = $validatedData['purpose'];
         $siteVisit->visit_photo = $visitPhotoPath;
-        $siteVisit->sign_photo = $validatedData['sign_photo'];
+        // $siteVisit->sign_photo = $validatedData['sign_photo'];
+        // $siteVisit->sign_photo_client = $validatedData['sign_photo_client'];
+        $siteVisit->sign_photo = $signPhotoPath;
+        $siteVisit->sign_photo_client = $signPhotoClientPath;
         $siteVisit->save();
 
         // Kembalikan respons ke pengguna
         return redirect()->route('website.sitevisit')->with('success', 'Site visit data has been successfully stored!');
+    }
+
+    private function saveBase64Image($base64Image, $subdirectory)
+    {
+        // Decode base64 image
+        $imageData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $base64Image));
+
+        // Generate unique filename
+        $filename = uniqid() . '.png';
+
+        // Save the image to storage
+        Storage::disk('public')->put("$subdirectory/$filename", $imageData);
+
+        // Return the path to the saved image
+        return "$subdirectory/$filename";
     }
 
 

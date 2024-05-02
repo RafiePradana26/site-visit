@@ -54,11 +54,11 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="signature">User's Signature</label><br>
-                                    <img src="{{ $siteVisits->sign_photo }}" alt="Signature" style="max-width: 200px;">
+                                    <img src="{{ asset('storage/' . $siteVisits->sign_photo) }}" alt="Signature" style="max-width: 200px;">
                                 </div>
                                 <div class="form-group">
-                                    <label for="signature">User's Signature</label><br>
-                                    <img src="{{ $siteVisits->sign_photo_cleint }}" alt="Signature"
+                                    <label for="signature">Client's Signature</label><br>
+                                    <img src="{{ asset('storage/' . $siteVisits->sign_photo_client) }}" alt="Signature"
                                         style="max-width: 200px;">
                                 </div>
                                 <div class="form-group">

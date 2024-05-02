@@ -74,7 +74,7 @@
                                         Signature</button>
                                 </div>
                                 <!-- Hidden input to store signature data URL -->
-                                <input type="hidden" id="sign_photo_input_client" name="sign_photo_client">
+                                <input type="hidden" id="sign_photo_input" name="sign_photo">
                                 <div class="form-group">
                                     <label>Client Signature</label>
                                     <canvas id="sign_photo_client" width="620" height="160"></canvas>
@@ -236,6 +236,85 @@
             var submitBtn = document.getElementById("sig-submitBtn");
             clearBtn.addEventListener("click", function(e) {
                 clearCanvas();
+            }, false);
+
+            // Tambahkan kode JavaScript untuk tanda tangan client
+            var canvas_client = document.getElementById("sign_photo_client");
+            var ctx_client = canvas_client.getContext("2d");
+            ctx_client.strokeStyle = "#222222";
+            ctx_client.lineWidth = 4;
+
+            var drawing_client = false;
+            var mousePos_client = {
+                x: 0,
+                y: 0
+            };
+            var lastPos_client = mousePos_client;
+
+            canvas_client.addEventListener("mousedown", function(e) {
+                drawing_client = true;
+                lastPos_client = getMousePos(canvas_client, e);
+            }, false);
+
+            canvas_client.addEventListener("mouseup", function(e) {
+                drawing_client = false;
+            }, false);
+
+            canvas_client.addEventListener("mousemove", function(e) {
+                if (drawing_client) {
+                    mousePos_client = getMousePos(canvas_client, e);
+                    renderCanvas_client();
+                }
+            }, false);
+
+            canvas_client.addEventListener("touchstart", function(e) {
+                drawing_client = true;
+                mousePos_client = getTouchPos(canvas_client, e);
+                var touch = e.touches[0];
+                var me = new MouseEvent("mousedown", {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                canvas_client.dispatchEvent(me);
+            }, false);
+
+            canvas_client.addEventListener("touchend", function(e) {
+                drawing_client = false;
+            }, false);
+
+            canvas_client.addEventListener("touchmove", function(e) {
+                if (drawing_client) {
+                    var touch = e.touches[0];
+                    var me = new MouseEvent("mousemove", {
+                        clientX: touch.clientX,
+                        clientY: touch.clientY
+                    });
+                    canvas_client.dispatchEvent(me);
+                }
+            }, false);
+
+
+            canvas_client.addEventListener("touchend", function(e) {
+                var me = new MouseEvent("mouseup", {});
+                canvas_client.dispatchEvent(me);
+            }, false);
+
+            function renderCanvas_client() {
+                if (drawing_client) {
+                    ctx_client.moveTo(lastPos_client.x, lastPos_client.y);
+                    ctx_client.lineTo(mousePos_client.x, mousePos_client.y);
+                    ctx_client.stroke();
+                    lastPos_client = mousePos_client;
+                }
+            }
+
+            function clearCanvas_client() {
+                canvas_client.width = canvas_client.width;
+            }
+
+            var clearBtn_client = document.getElementById("sig-clearBtn_client");
+            clearBtn_client.addEventListener("click", function(e) {
+                clearCanvas_client();
             }, false);
         </script>
     @endsection
