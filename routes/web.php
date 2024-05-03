@@ -3,12 +3,7 @@
 use App\Http\Controllers\Auth\DashboardController;
 use App\Http\Controllers\Auth\PostController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TicketController;
-use App\Http\Controllers\DashboarTechController;
-use App\Http\Controllers\DashboardUserController;
-use App\Http\Controllers\TaskController; // Import your TaskController
 use Illuminate\Support\Facades\Auth;
-use App\Http\Controllers\ChatController;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SiteVisitController;
 use App\Http\Controllers\WebsiteController;
@@ -26,14 +21,14 @@ use App\Http\Controllers\WebsiteController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/login', function () {
     auth()->logout();
     return view('auth.login');
 });
 
 
 //Website Site Visit
-Route::get('/site-visit', [SiteVisitController::class, 'indexSiteVisit'])->name('website.sitevisit');
+Route::get('/', [SiteVisitController::class, 'indexSiteVisit'])->name('website.sitevisit');
 Route::post('/site-visit/store', [SiteVisitController::class, 'store'])->name('site-visit.store');
 
 

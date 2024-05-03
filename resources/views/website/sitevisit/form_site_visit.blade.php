@@ -3,6 +3,10 @@
 @extends('layouts.user')
 <meta name="csrf-token" content="{{ csrf_token() }}">
 
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/hammer.js/2.0.8/hammer.min.js"></script>
+</head>
+
 <style>
     #sign_photo {
         border: 2px dotted #CCCCCC;
@@ -69,7 +73,7 @@
                                 <!-- Tambahkan area tanda tangan -->
                                 <div class="form-group">
                                     <label>User Signature</label>
-                                    <canvas id="sign_photo" width="620" height="160"></canvas>
+                                    <canvas id="sign_photo" width="200" height="100"></canvas>
                                     <button type="button" class="btn btn-default" id="sig-clearBtn">Clear
                                         Signature</button>
                                 </div>
@@ -77,7 +81,7 @@
                                 <input type="hidden" id="sign_photo_input" name="sign_photo">
                                 <div class="form-group">
                                     <label>Client Signature</label>
-                                    <canvas id="sign_photo_client" width="620" height="160"></canvas>
+                                    <canvas id="sign_photo_client" width="200" height="100"></canvas>
                                     <button type="button" class="btn btn-default" id="sig-clearBtn_client">Clear
                                         Signature</button>
                                 </div>
@@ -99,18 +103,46 @@
             </div>
         </div>
         <script>
-            // Pada form submit, simpan data tanda tangan dan submit formulir
+            function isCanvasEmpty(canvas) {
+                const ctx = canvas.getContext('2d');
+                const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+                return !Array.from(imageData).some(color => color !== 0);
+            }
+
+            // Pada form submit, simpan data tanda tangan dan submit formulir jika tanda tangan sudah diisi
             document.getElementById("submitSiteVisit").addEventListener("submit", function(e) {
                 e.preventDefault(); // Menghentikan pengiriman formulir
-                var canvas = document.getElementById("sign_photo");
-                var sign_photo = canvas.toDataURL();
-                document.getElementById("sign_photo_input").value = sign_photo;
 
-                var canvas2 = document.getElementById("sign_photo_client");
-                var sign_photo_client = canvas2.toDataURL();
-                document.getElementById("sign_photo_input_client").value = sign_photo_client;
-                this.submit(); // Submit the form
+                // Memeriksa apakah kedua tanda tangan sudah diisi
+                const userSignatureCanvas = document.getElementById("sign_photo");
+                const clientSignatureCanvas = document.getElementById("sign_photo_client");
+                if (!isCanvasEmpty(userSignatureCanvas) && !isCanvasEmpty(clientSignatureCanvas)) {
+                    // Tanda tangan sudah diisi, simpan datanya dan submit formulir
+                    var userSignature = userSignatureCanvas.toDataURL();
+                    document.getElementById("sign_photo_input").value = userSignature;
+
+                    var clientSignature = clientSignatureCanvas.toDataURL();
+                    document.getElementById("sign_photo_input_client").value = clientSignature;
+
+                    this.submit(); // Submit the form
+                } else {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Oops...',
+                        text: 'Please fill in both signatures before submitting the form.',
+                    });
+                }
             });
+
+            // document.getElementById("submitSiteVisit").addEventListener("touchstart", function(e) {
+            //     e.preventDefault();
+            // }, false);
+            // document.getElementById("submitSiteVisit").addEventListener("touchend", function(e) {
+            //     e.preventDefault();
+            // }, false);
+            document.getElementById("submitSiteVisit").addEventListener("touchmove", function(e) {
+                e.preventDefault();
+            }, false);
 
             // Tambahkan kode JavaScript untuk tanda tangan
             window.requestAnimFrame = (function(callback) {
@@ -237,6 +269,9 @@
             clearBtn.addEventListener("click", function(e) {
                 clearCanvas();
             }, false);
+            clearBtn.addEventListener("touchstart", function(e) {
+                clearCanvas();
+            }, false);
 
             // Tambahkan kode JavaScript untuk tanda tangan client
             var canvas_client = document.getElementById("sign_photo_client");
@@ -314,6 +349,9 @@
 
             var clearBtn_client = document.getElementById("sig-clearBtn_client");
             clearBtn_client.addEventListener("click", function(e) {
+                clearCanvas_client();
+            }, false);
+            clearBtn_client.addEventListener("touchstart", function(e) {
                 clearCanvas_client();
             }, false);
         </script>
