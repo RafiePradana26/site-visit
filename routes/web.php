@@ -30,6 +30,8 @@ Route::get('/login', function () {
 //Website Site Visit
 Route::get('/', [SiteVisitController::class, 'indexSiteVisit'])->name('website.sitevisit');
 Route::post('/site-visit/store', [SiteVisitController::class, 'store'])->name('site-visit.store');
+Route::get('/site-visit-all/generate-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
+
 
 
 //Admin Web Miracle
@@ -40,6 +42,8 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/site-visit-all', [SiteVisitController::class, 'showAllSiteVisit'])->name('sitevisit');
     Route::get('/site-visit-all/{id}', [SiteVisitController::class, 'showDetail'])->name('detail.sitevisit');
+    Route::get('/site-visit-all/generate-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
+
 
     // Blog Routes
     Route::get('/blog', [AdminController::class, 'showBlog'])->name('blog');

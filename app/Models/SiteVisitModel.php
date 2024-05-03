@@ -19,6 +19,7 @@ class SiteVisitModel extends Model
         'purpose',
         'visit_photo',
         'sign_photo',
-        'sign_photo_client' 
+        'sign_photo_client', 
+        'date_visit'
     ];
 }

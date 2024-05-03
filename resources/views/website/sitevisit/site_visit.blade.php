@@ -13,6 +13,9 @@
                                 </div>
                             </div>
                             <div class="">
+                                <div class="mb-3">
+                                    <a href="{{ route('export.pdf') }}" class="btn btn-primary">Export to PDF</a>
+                                </div>
                                 <table id="siteVisitTable" class="table table-striped">
                                     <thead>
                                         <tr>
@@ -33,7 +36,7 @@
                                                 <td>{{ $siteVisits->location }}</td>
                                                 <td>{{ $siteVisits->clientName }}</td>
                                                 <td>{{ $siteVisits->purpose }}</td>
-                                                <td>{{ $siteVisits->created_at }}</td>
+                                                <td>{{ $siteVisits->date_visit }}</td>
                                                 <td>
                                                     <a href="{{ route('detail.sitevisit', ['id' => $siteVisits->id]) }}"
                                                         class="btn btn-primary">Detail</a>

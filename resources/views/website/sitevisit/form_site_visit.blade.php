@@ -88,9 +88,9 @@
                                 <!-- Hidden input to store signature data URL -->
                                 <input type="hidden" id="sign_photo_input_client" name="sign_photo_client">
                                 <div class="form-group">
-                                    <label for="exampleInputName1">Tanggal Submit</label>
-                                    <input type="date" class="form-control" id="exampleInputName1" name="created_at"
-                                        placeholder="date" required value="{{ now()->format('Y-m-d') }}" readonly>
+                                    <label for="exampleInputName1">Date Visit</label>
+                                    <input type="date" class="form-control" id="exampleInputName1" name="date_visit"
+                                        placeholder="date" required>
                                 </div>
                                 <div>
                                     <button type="submit" class="btn btn-primary">Submit</button>

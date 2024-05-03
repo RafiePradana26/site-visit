@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteVisitModel;
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,7 @@ class SiteVisitController extends Controller
             'visit_photo' => 'required|image',
             'sign_photo' => 'required|string',
             'sign_photo_client' => 'required|string',
+            'date_visit' => 'required|date'
         ]);
 
         // Simpan foto kunjungan ke server
@@ -60,6 +62,7 @@ class SiteVisitController extends Controller
         // $siteVisit->sign_photo_client = $validatedData['sign_photo_client'];
         $siteVisit->sign_photo = $signPhotoPath;
         $siteVisit->sign_photo_client = $signPhotoClientPath;
+        $siteVisit->date_visit = $validatedData['date_visit'];
         $siteVisit->save();
 
         // Kembalikan respons ke pengguna
@@ -79,6 +82,13 @@ class SiteVisitController extends Controller
 
         // Return the path to the saved image
         return "$subdirectory/$filename";
+    }
+
+    public function exportPDF()
+    {
+        $siteVisits = SiteVisitModel::all();
+        $pdf = PDF::loadView('website.sitevisit.site_visit', compact('siteVisits'));
+        return $pdf->download('site_visits.pdf');
     }
 
 

@@ -23,6 +23,7 @@ class CreateSiteVisitTable extends Migration
             $table->string('visit_photo');
             $table->text('sign_photo')->nullable();
             $table->text('sign_photo_client')->nullable();
+            $table->date('date_visit')->nullable();
             $table->timestamps();
         });
     }

@@ -62,9 +62,9 @@
                                         style="max-width: 200px;">
                                 </div>
                                 <div class="form-group">
-                                    <label for="created_at">Date of Visit</label>
-                                    <input type="text" class="form-control" id="created_at"
-                                        value="{{ $siteVisits->created_at }}" readonly>
+                                    <label for="date_visit">Date of Visit</label>
+                                    <input type="text" class="form-control" id="date_visit"
+                                        value="{{ $siteVisits->date_visit }}" readonly>
                                 </div>
                             </form>
 
