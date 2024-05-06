@@ -24,6 +24,9 @@
                                             <th>Location</th>
                                             <th>Client name</th>
                                             <th>Purpose of Visit</th>
+                                            {{-- <th>Visit Photo</th>
+                                            <th>User Signature</th>
+                                            <th>Client Signature</th> --}}
                                             <th>Date of visit</th>
                                             <th>Detail</th>
                                         </tr>
@@ -36,6 +39,12 @@
                                                 <td>{{ $siteVisits->location }}</td>
                                                 <td>{{ $siteVisits->clientName }}</td>
                                                 <td>{{ $siteVisits->purpose }}</td>
+                                                {{-- <td><img src="{{ asset('storage/' . $siteVisits->visit_photo) }}"
+                                                        alt="Visit Photo"></td>
+                                                <td><img src="{{ asset('storage/' . $siteVisits->sign_photo) }}"
+                                                        alt="Signature"></td>
+                                                <td><img src="{{ asset('storage/' . $siteVisits->sign_photo_client) }}"
+                                                        alt="Signature"></td> --}}
                                                 <td>{{ $siteVisits->date_visit }}</td>
                                                 <td>
                                                     <a href="{{ route('detail.sitevisit', ['id' => $siteVisits->id]) }}"
@@ -59,10 +68,10 @@
         <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
         <script src="https://cdn.datatables.net/1.10.24/js/dataTables.bootstrap4.min.js"></script>
         <script>
-           $(document).ready(function() {
-            var table = $('#siteVisitTable').DataTable({
-                stateSave: true
-            }); 
-        });
+            $(document).ready(function() {
+                var table = $('#siteVisitTable').DataTable({
+                    stateSave: true
+                });
+            });
         </script>
     @endsection

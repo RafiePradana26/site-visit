@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\SiteVisitModel;
-use Barryvdh\DomPDF\PDF;
+use PDF;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 
@@ -88,7 +88,7 @@ class SiteVisitController extends Controller
     {
         $siteVisits = SiteVisitModel::all();
         $pdf = PDF::loadView('website.sitevisit.site_visit', compact('siteVisits'));
-        return $pdf->download('site_visits.pdf');
+        return $pdf->download('site_visit.pdf');
     }
 
 

@@ -11,7 +11,7 @@
                         </div>
                         <form method="POST" action="{{ route('register') }}">
                             @csrf
-                            <h4>BLOG YCMII</h4>
+                            <h4>Site Visit SDK</h4>
                             <p>Welcome! Register your account to get started:</p>
                             <div class="floating-label">
                                 <input id="name" type="text" @error('name') is-invalid @enderror name="name"
