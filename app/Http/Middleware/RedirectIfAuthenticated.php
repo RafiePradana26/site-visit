@@ -20,7 +20,7 @@ class RedirectIfAuthenticated
     public function handle(Request $request, Closure $next, ...$guards)
     {
         $guards = empty($guards) ? [null] : $guards;
-        $redirectUrl = 'auth/dashboard';
+        $redirectUrl = '/site-visit-all';
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
                 return redirect($redirectUrl);

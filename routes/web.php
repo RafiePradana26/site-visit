@@ -30,7 +30,7 @@ Route::get('/login', function () {
 //Website Site Visit
 Route::get('/', [SiteVisitController::class, 'indexSiteVisit'])->name('website.sitevisit');
 Route::post('/site-visit/store', [SiteVisitController::class, 'store'])->name('site-visit.store');
-Route::get('/site-visit-all/generate-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
+Route::get('/site-visit-all/export-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
 
 
 
@@ -42,7 +42,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
     Route::get('/site-visit-all', [SiteVisitController::class, 'showAllSiteVisit'])->name('sitevisit');
     Route::get('/site-visit-all/{id}', [SiteVisitController::class, 'showDetail'])->name('detail.sitevisit');
-    Route::get('/site-visit-all/generate-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
+    Route::get('/site-visit-all/export-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
 
 
     // Blog Routes
@@ -93,8 +93,6 @@ Route::middleware(['auth', 'ordal'])->group(function () {
     Route::get('/about_us', [AdminController::class, 'showAboutUs'])->name('about_us');
     Route::get('/form_about_us', [AdminController::class, 'showAboutUsForm'])->name('form_about_us');
 });
-
-
 
 //WEBSITE DEPAN
 Route::post('/upload', [AdminController::class, 'upload']);

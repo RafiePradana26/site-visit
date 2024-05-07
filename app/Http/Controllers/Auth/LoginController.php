@@ -27,7 +27,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = 'auth/dashboard';
+    protected $redirectTo = '/site-visit-all';
 
     protected function redirectTo()
     {
