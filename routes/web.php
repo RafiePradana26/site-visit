@@ -31,8 +31,9 @@ Route::get('/login', function () {
 Route::get('/', [SiteVisitController::class, 'indexSiteVisit'])->name('website.sitevisit');
 Route::post('/site-visit/store', [SiteVisitController::class, 'store'])->name('site-visit.store');
 Route::get('/site-visit-all/export-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
-
-
+Route::get('/site-visit-all/export-pdf-by-client-name', [SiteVisitController::class, 'exportPDFbyClientName'])->name('exportByClient.pdf');
+Route::get('/site-visit-all/filter-pdf-by-client-name', [SiteVisitController::class, 'exportPDFFilterByCLientName'])->name('filterByClientName.sitevisit');
+   
 
 //Admin Web Miracle
 
@@ -43,6 +44,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/site-visit-all', [SiteVisitController::class, 'showAllSiteVisit'])->name('sitevisit');
     Route::get('/site-visit-all/{id}', [SiteVisitController::class, 'showDetail'])->name('detail.sitevisit');
     Route::get('/site-visit-all/export-pdf', [SiteVisitController::class, 'exportPDF'])->name('export.pdf');
+    Route::get('/site-visit-all/export-pdf-by-client-name', [SiteVisitController::class, 'exportPDFbyClientName'])->name('exportByClient.pdf');
 
 
     // Blog Routes

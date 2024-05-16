@@ -18,14 +18,14 @@
     <link rel="stylesheet" href="{{ asset('assets/auth/css/style.css') }}">
     <!-- End layout styles -->
     <link rel="shortcut icon" href="{{ asset('assets/auth/images/favicon.ico') }}" />
-    
+
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="//cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css" />
 
     <!-- Adjust the path based on your project structure -->
-<script src="{{ asset('tinymce/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
+    <script src="{{ asset('tinymce/js/tinymce/tinymce.min.js') }}" referrerpolicy="origin"></script>
 
 
     @yield('style')
@@ -38,7 +38,7 @@
         <nav class="navbar default-layout-navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
             <div class="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
                 <a class="navbar-brand brand-logo" href="index.html"><img
-                    src="{{ asset('assets/auth/images/SDKLOGO260.png') }}" alt="logo"/></a>
+                        src="{{ asset('assets/auth/images/SDKLOGO260.png') }}" alt="logo" /></a>
                 <a class="navbar-brand brand-logo-mini" href="index.html"><img
                         src="{{ asset('assets/auth/images/logo-mini.svg') }}" alt="logo" /></a>
             </div>
@@ -237,23 +237,21 @@
                             <i class="mdi mdi-bookmark-check text-success nav-profile-badge"></i>
                         </a>
                     </li>
-                    @if(auth()->user()->role == 'admin' || auth()->user()->role == 'ordal' || auth()->user()->role == 'writer')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('sitevisit') }}">
-                            <span class="menu-title">Site Visit</span>
-                            <i class="mdi mdi-image-multiple menu-icon"></i>
-                        </a>
-                    </li>
+                    @if (auth()->user()->role == 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('sitevisit') }}">
+                                <span class="menu-title">Site Visit</span>
+                                <i class="mdi mdi-information-variant menu-icon"></i>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('filterByClientName.sitevisit') }}">
+                                <span class="menu-title">Export to Pdf by Client</span>
+                                <i class="mdi mdi-format-list-bulleted menu-icon"></i>
+                            </a>
+                        </li>
                     @endif
-                    {{-- @if(auth()->user()->role == 'admin')
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ route('showRolemanagement') }}">
-                            <span class="menu-title">Role Management</span>
-                            <i class="mdi mdi-information-variant menu-icon"></i>
-                        </a>
-                    </li>
-                    @endif
-                    @if(auth()->user()->role == 'admin')
+                    {{-- @if (auth()->user()->role == 'admin')
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('showUserManagement') }}">
                             <span class="menu-title">User Management</span>

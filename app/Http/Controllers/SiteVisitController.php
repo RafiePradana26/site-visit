@@ -34,6 +34,13 @@ class SiteVisitController extends Controller
         return view('website.sitevisit.form_site_visit');
     }
 
+    public function exportPDFFilterByClientName()
+    {
+        $siteVisits = SiteVisitModel::select('clientName')->distinct()->get();
+        return view('website.sitevisit.site_visit_pdf_by_client_name', compact('siteVisits'));
+    }
+
+
     public function store(Request $request)
     {
         // Validasi data
@@ -113,14 +120,39 @@ class SiteVisitController extends Controller
         return $pdf->stream('site_visit.pdf');
     }
 
-    // public function exportPDF()
-    // {
-    //     $siteVisits = SiteVisitModel::all();
-    //     $pdf = PDF::loadView('website.sitevisit.site_visit', compact('siteVisits'));
-    //     return $pdf->download('site_visit.pdf');
-    //     // return $pdf->stream(); 
-    // }
+    public function exportPDFbyClientName(Request $request)
+    {
+        $clientName = $request->input('client_name');
 
+        // Filter berdasarkan nama client jika tidak kosong
+        $query = SiteVisitModel::query();
+        if ($clientName) {
+            $query->where('clientName', $clientName);
+        }
+
+        // Filter berdasarkan range tanggal jika tidak kosong
+        if ($request->filled('start_date')) {
+            $query->whereDate('date_visit', '>=', $request->input('start_date'));
+        }
+        if ($request->filled('end_date')) {
+            $query->whereDate('date_visit', '<=', $request->input('end_date'));
+        }
+
+        // Urutkan data berdasarkan date_visit
+        $query->orderBy('date_visit');
+
+        // Ambil data sesuai dengan query yang telah difilter
+        $siteVisits = $query->get();
+
+        // Render PDF dengan data yang telah difilter
+        $pdf = new Dompdf();
+        $pdf->loadHtml(View::make('website.sitevisit.site_visit_pdf', compact('siteVisits'))->render());
+        $pdf->setPaper('A4', 'landscape');
+        $pdf->render();
+
+        // Kembalikan PDF sebagai respons
+        return $pdf->stream('site_visit_by_client_name.pdf');
+    }
 
     public function edit($id)
     {

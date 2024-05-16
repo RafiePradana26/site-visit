@@ -30,6 +30,7 @@
     <table>
         <thead>
             <tr>
+                <th>No</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Location</th>
@@ -42,19 +43,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach ($siteVisits as $siteVisit)
+            @foreach ($siteVisits as $key => $siteVisit)
                 <tr>
+                    <td>{{ $key + 1 }}</td>
                     <td>{{ $siteVisit->name }}</td>
                     <td>{{ $siteVisit->email }}</td>
                     <td>{{ $siteVisit->location }}</td>
                     <td>{{ $siteVisit->clientName }}</td>
                     <td>{{ $siteVisit->purpose }}</td>
                     <td><img src="{{ $siteVisit->visit_photo_url }}" alt="Visit Photo"
-                            style="max-width: 100px; max-height: 100px;"></td>
+                            style="max-width: 50px; max-height: 50px;"></td>
                     <td><img src="{{ $siteVisit->sign_photo_url }}" alt="Signature"
-                            style="max-width: 100px; max-height: 100px;"></td>
+                            style="max-width: 50px; max-height: 50px;"></td>
                     <td><img src="{{ $siteVisit->sign_photo_client_url }}" alt="Signature"
-                            style="max-width: 100px; max-height: 100px;"></td>
+                            style="max-width: 50px; max-height: 50px;"></td>
                     <td>{{ $siteVisit->date_visit }}</td>
                 </tr>
             @endforeach

@@ -20,10 +20,13 @@ class CreateSiteVisitTable extends Migration
             $table->string('location');
             $table->string('clientName');
             $table->text('purpose');
-            $table->string('visit_photo');
+            $table->string('visit_photo')->nullable();
             $table->text('sign_photo')->nullable();
             $table->text('sign_photo_client')->nullable();
             $table->date('date_visit')->nullable();
+            $table->text('visit_photo_url')->nullable();
+            $table->text('sign_photo_url')->nullable();
+            $table->text('sign_photo_client_url')->nullable();
             $table->timestamps();
         });
     }

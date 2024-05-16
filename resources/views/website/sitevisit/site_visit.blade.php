@@ -14,20 +14,33 @@
                             </div>
                             <div class="">
                                 <div class="mb-3">
-                                    <a href="{{ route('export.pdf') }}" class="btn btn-primary">Export to PDF</a>
+                                    <a href="{{ route('export.pdf') }}" class="btn btn-primary">Export All to PDF</a>
                                 </div>
+                                {{-- <form action="{{ route('exportByClient.pdf') }}" method="get">
+                                    <div class="form-group">
+                                        <label for="client_name">Client Name:</label>
+                                        <input type="text" class="form-control" id="client_name" name="client_name" placeholder="Enter client name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="start_date">Start Date:</label>
+                                        <input type="date" class="form-control" id="start_date" name="start_date">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="end_date">End Date:</label>
+                                        <input type="date" class="form-control" id="end_date" name="end_date">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary">Export PDF</button>
+                                </form> --}}
                                 <table id="siteVisitTable" class="table table-striped">
                                     <thead>
                                         <tr>
                                             <th>Name</th>
-                                            <th>Email</th>
+                                            {{-- <th>Email</th> --}}
                                             <th>Location</th>
                                             <th>Client name</th>
-                                            <th>Purpose of Visit</th>
-                                            {{-- <th>Visit Photo</th>
-                                            <th>User Signature</th>
-                                            <th>Client Signature</th> --}}
+                                            {{-- <th>Purpose of Visit</th> --}}
                                             <th>Date of visit</th>
+                                            <th>Submit date</th>
                                             <th>Detail</th>
                                         </tr>
                                     </thead>
@@ -35,17 +48,12 @@
                                         @foreach ($siteVisits as $siteVisits)
                                             <tr>
                                                 <td>{{ $siteVisits->name }}</td>
-                                                <td>{{ $siteVisits->email }}</td>
+                                                {{-- <td>{{ $siteVisits->email }}</td> --}}
                                                 <td>{{ $siteVisits->location }}</td>
                                                 <td>{{ $siteVisits->clientName }}</td>
-                                                <td>{{ $siteVisits->purpose }}</td>
-                                                {{-- <td><img src="{{ asset('storage/' . $siteVisits->visit_photo) }}"
-                                                        alt="Visit Photo"></td>
-                                                <td><img src="{{ asset('storage/' . $siteVisits->sign_photo) }}"
-                                                        alt="Signature"></td>
-                                                <td><img src="{{ asset('storage/' . $siteVisits->sign_photo_client) }}"
-                                                        alt="Signature"></td> --}}
+                                                {{-- <td>{{ $siteVisits->purpose }}</td>                                      --}}
                                                 <td>{{ $siteVisits->date_visit }}</td>
+                                                <td>{{$siteVisits->created_at}}</td>
                                                 <td>
                                                     <a href="{{ route('detail.sitevisit', ['id' => $siteVisits->id]) }}"
                                                         class="btn btn-primary">Detail</a>

@@ -103,6 +103,30 @@
             </div>
         </div>
         <script>
+            // Mendapatkan elemen input tanggal
+            var dateInput = document.getElementById('exampleInputName1');
+
+            // Mendapatkan tanggal saat ini
+            var currentDate = new Date();
+
+            // Mendapatkan tanggal 7 hari sebelum tanggal saat ini
+            var minDate = new Date();
+            minDate.setDate(currentDate.getDate() - 7);
+
+            // Mendapatkan tanggal 7 hari setelah tanggal saat ini
+            var maxDate = new Date();
+            maxDate.setDate(currentDate.getDate() + 0);
+
+            // Format tanggal ke format ISO (YYYY-MM-DD)
+            var minDateString = minDate.toISOString().split('T')[0];
+            var maxDateString = maxDate.toISOString().split('T')[0];
+
+            // Set atribut min dan max pada input tanggal
+            dateInput.setAttribute('min', minDateString);
+            dateInput.setAttribute('max', maxDateString);
+
+            // Signature
+
             function isCanvasEmpty(canvas) {
                 const ctx = canvas.getContext('2d');
                 const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height).data;
@@ -356,6 +380,7 @@
             }, false);
         </script>
     @endsection
+
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     @if (session('success'))
